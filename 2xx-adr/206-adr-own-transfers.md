@@ -8,7 +8,7 @@
 - **Jednostranný převod** (`own_transfer`, migrace 007): transakce, která posílá peníze na vlastní účet nebo z něj, i když druhý účet nemá import. Vlastní účet může být ruční účet jen s číslem.
 - **Rozpoznání podle čísla protiúčtu:** `transfer.DetectOwn` porovnává protiúčet s čísly vlastních účtů v jednotném tvaru (`bank.CanonicalNumber`: bez nul na začátku, z IBAN). Běží po každém importu nad všemi transakcemi a po založení účtu, takže platí i zpětně.
 - **Ruční označení** (`PUT /transfers/{tx}/own`) slouží pro platby bez čísla účtu, např. dobití kartou. Volitelně si zapamatuje protistranu (`own_transfer_rule`).
-- **Vrácení:** zrušení jednostranného převodu se uloží do `not_transfer`, aby ho rozpoznání podle čísla znovu neoznačilo.
+- **Vrácení:** zrušení převodu (jednostranného i páru) uloží jeho strany do `not_transfer`, aby je párování ani rozpoznání podle čísla po dalším importu znovu neoznačilo. Ruční spárování nebo označení záznam smaže.
 - **Doplnění na pár:** když se později naimportuje výpis druhého účtu, automatické párování najde i transakce s jednostranným převodem. Pár jednostranný záznam nahradí.
 - Všechna místa, která převody vylučují (výdaje, příjmy, rozpočet, fronta k zařazení, klasifikátor), čtou pohled `transfer_leg`, který spojuje páry a jednostranné převody.
 - **Návrhy vlastních účtů:** protiúčty, které banka sama označuje za vlastní (mBank „VLASTNÍ PŘEVOD“, „PŘEVOD NA/Z MSPOŘENÍ“, kategorie „Převod mezi vlastními účty“), a které coin-book ještě nezná.
